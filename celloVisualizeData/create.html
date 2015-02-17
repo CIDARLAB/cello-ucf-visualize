@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Cello Visualize</title>
+    <script type='text/javascript' src='js/clotho3API.js'></script>
+    <script type='text/javascript' src='js/queryFunctions.js'></script>
+
+    <script language='javascript' type='text/javascript' src='js/jquery.js'></script>
+    <script language='javascript' type='text/javascript' src='js/jquery.flot.js'></script>
+    <script language='javascript' type='text/javascript' src='js/jquery.flot.js'></script>
+    <script language='javascript' type='text/javascript' src='js/jquery.flot.axislabels.js'></script>
+    <script type='text/javascript' src='js/d3.v3.js'></script>
+
+
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+
+    <!--<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>-->
+    <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+    <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.0/q.js'></script>
+</head>
+
+
+<body>
+
+<h3>Choose gates:</h3>
+
+<div id='repressors'>
+    <div id='SrpR' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an0-SrpR' checked>NOR_an0-SrpR<br>
+        <input type='radio' name='gate' id='NOR_an1-SrpR'>NOR_an1-SrpR<br>
+        <input type='radio' name='gate' id='NOR_an3-SrpR'>NOR_an3-SrpR<br>
+        <input type='radio' name='gate' id='NOR_js2-SrpR'>NOR_js2-SrpR<br>
+    </div>
+    <div id='PhlF' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an0-PhlF'>NOR_an0-PhlF<br>
+        <input type='radio' name='gate' id='NOR_an1-PhlF'>NOR_an1-PhlF<br>
+        <input type='radio' name='gate' id='NOR_js2-PhlF'>NOR_js2-PhlF<br>
+    </div>
+    <div id='BM3R1' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an0-BM3R1'>NOR_an0-BM3R1<br>
+        <input type='radio' name='gate' id='NOR_an1-BM3R1'>NOR_an1-BM3R1<br>
+        <input type='radio' name='gate' id='NOR_js2-BM3R1'>NOR_js2-BM3R1<br>
+    </div>
+    <div id='QacR' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an0-QacR'>NOR_an0-QacR<br>
+        <input type='radio' name='gate' id='NOR_an1-QacR'>NOR_an1-QacR<br>
+        <input type='radio' name='gate' id='NOR_js-QacR'>NOR_js-QacR<br>
+    </div>
+    <div id='AmtR' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an1-AmtR'>NOR_an1-AmtR<br>
+        <input type='radio' name='gate' id='NOR_js2-AmtR'>NOR_js2-AmtR<br>
+    </div>
+    <div id='IcaRA' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an1-IcaRA'>NOR_an1-IcaRA<br>
+        <input type='radio' name='gate' id='NOR_js2-IcaRA'>NOR_js2-IcaRA<br>
+    </div>
+    <div id='LitR' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_an2-LitR'>NOR_an2-LitR<br>
+        <input type='radio' name='gate' id='NOR_js2-LitR'>NOR_js2-LitR<br>
+    </div>
+    <div id='HlyIIR' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_js2-HlyIIR'>NOR_js2-HlyIIR<br>
+    </div>
+    <div id='BetI' style='height: 100px; width: 11.1%; float: left'>
+        <input type='radio' name='gate' id='NOR_js2-BetI'>NOR_js2-BetI<br>
+    </div>
+</div>
+
+
+<br style='clear: both'>
+<br>
+
+<div>
+    <!--<input type='text'  id='gateName' placeholder='Gate Name'>-->
+    <button class='btn btn-primary' onclick='create1();'>Show Data</button>
+</div>
+
+<br>
+
+<div id='all_figures'>
+
+</div>
+
+</body>
+</html>
+
+<script>
+
+    var elements = document.querySelectorAll('#repressors input');
+
+</script>
+
+<style>
+
+    #tables td  {
+        width: 100px;
+    }
+
+
+</style>

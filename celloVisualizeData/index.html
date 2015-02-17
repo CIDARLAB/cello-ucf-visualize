@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Flot Examples</title>
+    <link href="examples.css" rel="stylesheet" type="text/css">
+    <script language="javascript" type="text/javascript" src="js/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="js/jquery.flot.axislabels.js"></script>
+    <script type="text/javascript" src="../js/d3.v3.js"></script>
+</head>
+<body>
+
+<div id="header">
+    <h2>Cello database visualizations</h2>
+</div>
+
+
+<div id="placeholder" class="demo-container" style="height: 450px; width: 850px; display: none"></div>
+
+<div id="toxicity" class="demo-container" style="height: 350px; width: 350px; float: left"></div>
+<div id="transfer_fn" class="demo-container" style="height: 350px; width: 350px; float: left"></div>
+<div id="single_distr" class="demo-container" style="height: 350px; width: 350px; float: left"></div>
+
+<br style="clear: both">
+
+<div id="two_distr_A" style="height: 175px; width: 350px"></div>
+<div id="two_distr_B" style="height: 175px; width: 350px"></div>
+
+<div id='heatmap'></div>
+
+
+</body>
+</html>
+
+
+
+<script>
+
+    $(function() {
+
+        //plotPlaceholder();
+
+        plotToxicity();
+
+        plotTransferFunction();
+
+        plotSingleDistribution();
+
+        plotTwoDistributions();
+
+        plotD3();
+    });
+
+
+    function plotD3() {
+        var data = [
+            {score: 0.5, row: 0, col: 0},
+            {score: 0.7, row: 0, col: 1},
+            {score: 0.2, row: 1, col: 0},
+            {score: 0.4, row: 1, col: 1}
+        ];
+
+        //height of each row in the heatmap
+        //width of each column in the heatmap
+        var gridSize = 50,
+                h = gridSize,
+                w = gridSize,
+                rectPadding = 60;
+
+        var colorLow = 'green', colorMed = 'yellow', colorHigh = 'red';
+
+        var margin = {top: 20, right: 80, bottom: 30, left: 50},
+                width = 640 - margin.left - margin.right,
+                height = 380 - margin.top - margin.bottom;
+
+        var colorScale = d3.scale.linear()
+                .domain([-1, 0, 1])
+                .range([colorLow, colorMed, colorHigh]);
+
+        var svg = d3.select("#heatmap").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var heatMap = svg.selectAll(".heatmap")
+                .data(data, function(d) { return d.col + ':' + d.row; })
+                .enter().append("svg:rect")
+                .attr("x", function(d) { return d.row * w; })
+                .attr("y", function(d) { return d.col * h; })
+                .attr("width", function(d) { return w; })
+                .attr("height", function(d) { return h; })
+                .style("fill", function(d) { return colorScale(d.score); });
+
+
+    }
+
+    function plotTwoDistributions() {
+        var d1 = [];
+
+        d1.push([1,0.1]);
+        d1.push([2,0.3]);
+        d1.push([3,0.5]);
+        d1.push([4,0.9]);
+        d1.push([5,0.9]);
+        d1.push([6,0.7]);
+        d1.push([7,0.5]);
+        d1.push([8,0.3]);
+        d1.push([9,0.2]);
+        d1.push([10,0.1]);
+
+        var options = {
+            //lines: { show: true, lineWidth:5 },
+            xaxis: { ticks: false},
+            yaxis: { },
+            grid: { hoverable: true, clickable: true , color: "#999999"}
+        };
+
+        $.plot($("#two_distr_A"), [
+            {
+                data: d1,
+                color:'#1F78B4',
+                bars: {
+                    show: true
+                }
+            }
+        ], options);
+
+        $.plot($("#two_distr_B"), [
+            {
+                data: d1,
+                color:'#1F78B4',
+                bars: {
+                    show: true
+                }
+            }
+        ], options);
+    }
+
+    function plotSingleDistribution() {
+
+        var d1 = [];
+
+        d1.push([1,0.1]);
+        d1.push([2,0.3]);
+        d1.push([3,0.5]);
+        d1.push([4,0.9]);
+        d1.push([5,0.9]);
+        d1.push([6,0.7]);
+        d1.push([7,0.5]);
+        d1.push([8,0.3]);
+        d1.push([9,0.2]);
+        d1.push([10,0.1]);
+
+        var options = {
+            //lines: { show: true, lineWidth:5 },
+            xaxis: { axisLabel: 'input R.E.U.'},
+            yaxis: { axisLabel: 'output R.E.U.'},
+            grid: { hoverable: true, clickable: true , color: "#999999"}
+        };
+
+        $.plot($("#single_distr"), [
+            {
+                data: d1,
+                color:'#1F78B4',
+                bars: {
+                    show: true
+                }
+            }
+        ], options);
+    }
+
+
+    function plotTransferFunction() {
+        var pmin = 0.05;
+        var pmax = 15.0;
+        var n =    2;
+        var kd =   0.2;
+
+        var options = {
+            lines: { show: true, lineWidth:5 },
+            xaxis: { axisLabel: 'input R.E.U.', ticks: [0.001,0.01,0.1,1,10,100], min: 0.01, max:100,
+                transform:  function(v) {return Math.log(v+0.0001); }, tickDecimals:2 },
+            yaxis: { axisLabel: 'output R.E.U.', ticks: [0.001,0.01,0.1,1,10,100], min: 0.01, max:100,
+                transform:  function(v) {return Math.log(v+0.0001); }, tickDecimals:2 },
+            grid: { hoverable: true, clickable: true , color: "#999"}
+        };
+
+        var data1 = sampleFunction( 0.1, 1, function(x){ return pmin + (pmax-pmin)/( 1+Math.pow((x/kd),n ) ) } );
+
+        $.plot($("#transfer_fn"),
+                [
+                    { label: "xfer", data: data1, color:'#EE0000'}
+                ], options);
+
+    }
+
+
+    function plotToxicity() {
+
+        var d1 = [];
+        d1.push([0.04, 1.05]);
+        d1.push([0.10, 0.97]);
+        d1.push([0.21, 0.97]);
+        d1.push([0.71, 0.99]);
+        d1.push([1.95, 1.06]);
+        d1.push([5.52, 0.89]);
+        d1.push([6.98, 0.94]);
+        d1.push([7.02, 0.92]);
+        d1.push([7.11, 0.53]);
+        d1.push([8.44, 0.12]);
+        d1.push([17.52, 0.05]);
+        d1.push([20.33, 0.05]);
+
+
+        var options = {
+            lines: {show: true, lineWidth:5},
+            xaxis: {
+                axisLabel: 'input R.E.U.', ticks: [0.001,0.01,0.1,1,10,100], min: 0.01, max:100,
+                transform:  function(v) {return Math.log(v+0.0001); }, tickDecimals:2 },
+            yaxis: {
+                axisLabel: '%OD600', min:0.0, max:1.2},
+            grid: { hoverable: true, clickable: true, autoHighlight: true }
+        }
+
+        $.plot($('#toxicity'),
+                [
+                    {label: "toxicity", data: d1, color:'green'}
+                ], options);
+    }
+
+    function plotPlaceholder() {
+        var d1 = [];
+        for (var i = 0; i < 14; i += 0.5) {
+            d1.push([i, Math.sin(i)]);
+        }
+
+        var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+
+        // A null signifies separate line segments
+
+        var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+
+        $.plot("#placeholder", [ d1, d2, d3 ]);
+    }
+
+
+
+    function sampleFunction(x1, x2, func) {
+        var d = [ ];
+        var logx1 = Math.log(x1);
+        var logx2 = Math.log(x2);
+
+        var step = (logx2-logx1)/300;
+        for (var i = logx1; i < logx2; i += step ) {
+            var pow_i = Math.pow(i,10);
+            d.push([pow_i, func( pow_i ) ]);
+        }
+
+        return d;
+    }
+
+
+
+</script>
